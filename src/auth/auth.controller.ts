@@ -1,0 +1,20 @@
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { AuthService } from './auth.service.js';
+
+@ApiTags('Auth')
+@Controller('auth')
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+
+  @Post('register')
+  register(@Body() body: { nama: string; email: string; password: string }) {
+    return this.authService.register(body.nama, body.email, body.password);
+  }
+
+  @Post('login')
+  @HttpCode(200)
+  login(@Body() body: { email: string; password: string }) {
+    return this.authService.login(body.email, body.password);
+  }
+}

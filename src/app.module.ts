@@ -7,6 +7,7 @@ import { AppService } from './app.service.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { DestinasiModule } from './destinasi/destinasi.module.js';
 import { UlasanModule } from './ulasan/ulasan.module.js';
+import { AuthModule } from './auth/auth.module.js';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UlasanModule } from './ulasan/ulasan.module.js';
     PrismaModule,
     DestinasiModule,
     UlasanModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

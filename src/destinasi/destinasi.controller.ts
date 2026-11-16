@@ -1,11 +1,14 @@
 import {
   Controller, Get, Post, Patch, Delete,
-  Param, Body, Query, ParseIntPipe, HttpCode,
+  Param, Body, Query, ParseIntPipe, HttpCode, UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { DestinasiService } from './destinasi.service.js';
 import { CreateDestinasiDto } from './dto/create-destinasi.dto.js';
 import { UpdateDestinasiDto } from './dto/update-destinasi.dto.js';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard.js';
+import { RolesGuard } from '../auth/roles.guard.js';
+import { Roles } from '../auth/roles.decorator.js';
 
 @ApiTags('Destinasi')
 @Controller('destinasi')
@@ -24,17 +27,26 @@ export class DestinasiController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiBearerAuth()
   create(@Body() dto: CreateDestinasiDto) {
     return this.destinasiService.create(dto);
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiBearerAuth()
   update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateDestinasiDto) {
     return this.destinasiService.update(id, dto);
   }
 
   @Delete(':id')
   @HttpCode(200)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiBearerAuth()
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.destinasiService.remove(id);
   }
